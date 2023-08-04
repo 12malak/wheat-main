@@ -51,14 +51,6 @@ const allAdmins = (req, res) => {
 };
 
 
-const oneUser =  async (req, res) => {
-  const id = req.params.id;
-  const user = await User.find({ _id: id });
- 
-  res.json(user);
-};
-
-
 const newUser = async (req, res) => {
   const { firstName, email, password, role } = req.body;
 
@@ -126,8 +118,21 @@ const user0=user[0]
 
 }
 };
+const deleteUser = async (req, res) => {
+  const userId = req.params.id;
+   await User.findByIdAndDelete(userId);
+   res.status(204).json(User);
+};
 
 
+const oneUser =  async (req, res) => {
+  const id = req.params.id;
+  const user = await User.find({ _id: id });
+ 
+  res.json(user);
+};
+
+ 
 const updateUser = async (req, res) => {
     const userId  = req.params.id;
     const updatedUserData = req.body;
@@ -137,11 +142,6 @@ const updateUser = async (req, res) => {
     res.json(updatedUser);
 };
 
-const deleteUser = async (req, res) => {
-   const userId = req.params.id;
-    await User.findByIdAndDelete(userId);
-    res.status(204).json(User);
-};
 
 
 // Protected route
