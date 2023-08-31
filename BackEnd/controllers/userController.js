@@ -56,6 +56,7 @@ const newUser = async (req, res) => {
 
   const user0 = await User.find({ email: email });
   if (user0.length == 0) {
+    // 5 عدد المرات يلي بدنا نخزن فيها
     const hashPassword = await bcrypt.hash(password, 5);
     const user = new User({
       firstName: firstName,
@@ -76,6 +77,11 @@ const newUser = async (req, res) => {
     // handle error
   }
 };
+
+// The option { expiresIn: "1h" } in the jwt.sign function sets the expiration time for the generated JWT token to 1 hour.
+//  After 1 hour, the token will no longer be considered valid, and the user will need to authenticate again.
+
+
 const logout = (req, res) => {
   console.log("wesl");
   //window.location.href = 'http://localhost:3001/';
@@ -86,22 +92,17 @@ const logout = (req, res) => {
 
   
 };
-// window.parent.postMessage('clearLocalStorage', '*');
-// Update sign status and remove auth and roles from local storage
-//localStorage.setItem('SignStatus', 'signUp');
-// localStorage.removeItem('auth');
-//localStorage.removeItem('roles');
-// localStorage.removeItem("userid");
-// localStorage.removeItem("curruntUser");
-// Navigate to the home page and reload the site after logging out
 
-//console.log( localStorage.removeItem("auth"));
+
+// regestering
+
 const newUserLogin =  async (req , res) => {
   
   const {email , password } = req.body;
   const user = await User.find({ email: email });
   if(user.length != 0){
     // password check
+    // compare : The method to take 2 parameters is to make a comparison
     const validpassword = await bcrypt.compare(
       password,
       user[0].password
